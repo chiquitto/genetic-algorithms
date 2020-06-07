@@ -1,0 +1,16 @@
+{
+  "name": "chiquitto/find-word-genetic-algorithm",
+  "description": "Example of a genetic algorithm to find a word",
+  "authors": [
+    {
+      "name": "Alisson Chiquitto",
+      "email": "chiquitto@gmail.com"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "Chiquitto\\FindWord\\": "src/"
+    }
+  }
+}
