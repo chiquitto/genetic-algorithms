@@ -9,20 +9,18 @@ class Populacao
      */
     private $individuos;
     private $somatorioAptidao = 0;
-    private $geracao;
 
-    public function __construct($geracao)
+    public function __construct()
     {
         $this->individuos = [];
-        $this->geracao = $geracao;
     }
 
-    public static function inicializar($geracao)
+    public static function inicializar()
     {
-        $pop = new Populacao($geracao);
+        $pop = new Populacao();
 
         for ($i = 0; $i < AlgoritmoGenetico::$maxTamPopulacao; $i++) {
-            $pop->addIndividuo(Individuo::random($geracao));
+            $pop->addIndividuo(Individuo::random());
         }
 
         return $pop;
@@ -88,28 +86,6 @@ class Populacao
             $soma += $this->individuos[$i]->getAptidao();
         } while ($soma < $sorteio);
         return $this->individuos[$i];
-    }
-
-    public function mutacao()
-    {
-        foreach ($this->individuos as $individuo) {
-            if ($individuo->getGeracao() != $this->getGeracao()) {
-                continue;
-            }
-
-            $string = $individuo->getCromossomo();
-            for ($i = 0; $i < strlen($string); $i++) {
-                if (rand(0, 100) < 3) {
-                    $string[$i] = Util::randomLetra();
-                }
-            }
-            $individuo->setCromossomo($string);
-        }
-    }
-
-    public function getGeracao()
-    {
-        return $this->geracao;
     }
 
     public function getSomatorioAptidao()

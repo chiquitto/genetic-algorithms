@@ -32,14 +32,13 @@ class AlgoritmoGenetico
 
         $this->dumpInicio($entrada);
 
-        $this->populacao = Populacao::inicializar($this->geracao);
+        $this->populacao = Populacao::inicializar();
         $this->populacao->avaliar($entrada);
 
         while ($this->criterioParada()) {
-            $this->novaPopulacao = new Populacao($this->geracao);
+            $this->novaPopulacao = new Populacao();
             $this->copiarMelhores();
             $this->crossover();
-            $this->novaPopulacao->mutacao();
             $this->novaPopulacao->avaliar($entrada);
 
             $this->populacao = $this->novaPopulacao;
@@ -69,8 +68,11 @@ class AlgoritmoGenetico
     private function crossover()
     {
         while ($this->novaPopulacao->calcularTamanho() < static::$maxTamPopulacao) {
-            $res = $this->crossoverIndividuos();
-            $this->novaPopulacao->addIndividuos($res);
+            $filhos = $this->crossoverIndividuos();
+            foreach ($filhos as $individuo) {
+                $individuo->mutacao();
+            }
+            $this->novaPopulacao->addIndividuos($filhos);
         }
     }
 
@@ -98,8 +100,11 @@ class AlgoritmoGenetico
         echo "Missão: Encontrar a string informada pelo usuario.\n";
         echo "String: {$entrada}\n";
         echo "Comprimento do problema: ", static::$tamCromossomo, "\n";
-        echo "Tamanho do problema: ";
-        echo strtr(pow(static::$tamCromossomo, strlen(Util::letras())), ['E+' => ' x 10^']);
+
+        $size = pow(static::$tamCromossomo, strlen(Util::letras()));
+        // echo "Tamanho do problema: ", strtr($size, ['E+' => ' x 10^']), "\n";
+        echo "Tamanho do problema: 2 ^ ", floor(log($size, 2));
+
         echo "\n\n\n";
     }
 

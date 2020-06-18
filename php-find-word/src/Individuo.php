@@ -8,20 +8,17 @@ class Individuo
 {
     private $cromossomo;
     private $aptidao;
-    private $geracao;
 
-    public static function random($geracao)
+    public static function random()
     {
         return new Individuo(
-            Util::randomPalavra(AlgoritmoGenetico::$tamCromossomo),
-            $geracao
+            Util::randomPalavra(AlgoritmoGenetico::$tamCromossomo)
         );
     }
 
-    public function __construct($cromossomo, $geracao)
+    public function __construct($cromossomo)
     {
         $this->cromossomo = $cromossomo;
-        $this->geracao = $geracao;
     }
 
     public function avaliar($correto)
@@ -35,14 +32,19 @@ class Individuo
         return $this->aptidao;
     }
 
+    public function mutacao() {
+        $string = $this->getCromossomo();
+        for ($i = 0; $i < strlen($string); $i++) {
+            if (rand(0, 100) < 3) {
+                $string[$i] = Util::randomLetra();
+            }
+        }
+        $this->setCromossomo($string);
+    }
+
     public function getAptidao()
     {
         return $this->aptidao;
-    }
-
-    public function getGeracao()
-    {
-        return $this->geracao;
     }
 
     public function getCromossomo()
