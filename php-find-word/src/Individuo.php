@@ -25,17 +25,17 @@ class Individuo
     {
         $this->aptidao = 1;
         for ($i = 0; $i < AlgoritmoGenetico::$tamCromossomo; $i++) {
-            if ($correto[$i] == $this->cromossomo[$i]) {
-                $this->aptidao++;
-            }
+            $this->aptidao += abs(ord($correto[$i]) - ord($this->cromossomo[$i]));
         }
+        $this->aptidao = 1 / $this->aptidao;
         return $this->aptidao;
     }
 
-    public function mutacao() {
+    public function mutacao()
+    {
         $string = $this->getCromossomo();
         for ($i = 0; $i < strlen($string); $i++) {
-            if (rand(0, 100) < 3) {
+            if (mt_rand(0, 100) < 1) {
                 $string[$i] = Util::randomLetra();
             }
         }

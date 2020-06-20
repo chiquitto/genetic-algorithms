@@ -78,7 +78,7 @@ class Populacao
      */
     public function roletaViciada()
     {
-        $sorteio = mt_rand(1, $this->somatorioAptidao);
+        $sorteio = mt_rand() / mt_getrandmax() * $this->somatorioAptidao;
         $soma = 0;
         $i = -1;
         do {

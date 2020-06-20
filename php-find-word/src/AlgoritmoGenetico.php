@@ -37,7 +37,6 @@ class AlgoritmoGenetico
 
         while ($this->criterioParada()) {
             $this->novaPopulacao = new Populacao();
-            $this->copiarMelhores();
             $this->crossover();
             $this->novaPopulacao->avaliar($entrada);
 
@@ -50,19 +49,12 @@ class AlgoritmoGenetico
         $this->dump(true);
     }
 
-    private function copiarMelhores()
-    {
-        $this->novaPopulacao->addIndividuos(
-            $this->populacao->melhores((int) (AlgoritmoGenetico::$maxTamPopulacao/10))
-        );
-    }
-
     private function criterioParada()
     {
         $melhorAptidao = $this->populacao->melhorIndividuo()->getAptidao();
 
         return ($this->geracao <= static::$maxGeracoes)
-            && ($melhorAptidao < (static::$tamCromossomo + 1));
+            && ($melhorAptidao < 1);
     }
 
     private function crossover()
@@ -117,12 +109,11 @@ class AlgoritmoGenetico
             return;
         }
 
-        printf("# %4d: %s\tMelhor:%d/%d\tMedia:%.2f\n",
+        printf("# %4d: %s\tMelhor:%0.4f\tSomatorio:%.2f\n",
             $this->geracao,
             $this->populacao->melhorIndividuo()->getCromossomo(),
             $this->populacao->melhorIndividuo()->getAptidao(),
-            (static::$tamCromossomo + 1),
-            $this->populacao->getSomatorioAptidao() / $this->populacao->calcularTamanho()
+            $this->populacao->getSomatorioAptidao()
         );
     }
 }
